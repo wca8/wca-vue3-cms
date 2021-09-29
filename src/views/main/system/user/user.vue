@@ -12,6 +12,14 @@
       </template>
     </hy-table>
   </div>
+
+  <el-checkbox-group v-model="checkList">
+    <el-checkbox label="Option A" />
+    <el-checkbox label="Option B" />
+    <el-checkbox label="Option C" />
+    <el-checkbox label="disabled" disabled />
+    <el-checkbox label="selected and disabled" disabled />
+  </el-checkbox-group>
 </template>
 
 <script lang="ts">
@@ -29,6 +37,7 @@ export default defineComponent({
   },
   setup() {
     const store = useStore()
+
     store.dispatch('system/getPageListAction', {
       pageUrl: '/users/list',
       queryInfo: {
@@ -57,10 +66,14 @@ export default defineComponent({
         slotName: 'updateAt'
       }
     ]
+
+    const checkList = ref(['selected and disabled', 'Option A'])
+
     return {
       searchFormConfig,
       userList,
-      propList
+      propList,
+      checkList
     }
   }
 })
@@ -70,5 +83,11 @@ export default defineComponent({
 .content {
   padding: 20px;
   border-top: 20px solid #f5f5f5;
+}
+</style>
+
+<style lang="less">
+.el-checkbox__input.is-checked + .el-checkbox__label {
+  color: red !important;
 }
 </style>
