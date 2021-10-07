@@ -12,6 +12,7 @@
       :data="listData"
       border
       style="width: 100%"
+      v-bind="childrenProps"
       @selection-change="handleSelectionChange"
     >
       <el-table-column
@@ -32,7 +33,7 @@
         :key="propItem.prop"
         @selection-change="handleSelectionChange"
       >
-        <el-table-column v-bind="propItem" align="center">
+        <el-table-column v-bind="propItem" align="center" show-overflow-tooltip>
           <template #default="scope">
             <slot :name="propItem.slotName" :row="scope.row">
               {{ scope.row[propItem.prop] }}
@@ -42,7 +43,7 @@
       </template>
     </el-table>
 
-    <div class="footer">
+    <div class="footer" v-if="showFooter">
       <slot name="footer">
         <el-pagination
           @size-change="handleSizeChange"
@@ -83,9 +84,17 @@ export default defineComponent({
       type: Boolean,
       default: false
     },
+    childrenProps: {
+      type: Object,
+      default: () => ({})
+    },
     page: {
       type: Object,
       default: () => ({ currentPage: 0, pageSize: 10 })
+    },
+    showFooter: {
+      type: Boolean,
+      default: true
     }
   },
   emits: ['selectionChange', 'update:page'],
